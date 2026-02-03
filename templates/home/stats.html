@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid px-4">
+
+    <h2 class="fw-bold text-primary mb-4">
+        <i class="fas fa-chart-area me-2"></i> Statistiques Météorologiques
+    </h2>
+
+    <!-- ================= KPI ================= -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Température Max</h6>
+                    <h3 class="fw-bold text-danger">{{ temp_max }} °C</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Température Min</h6>
+                    <h3 class="fw-bold text-primary">{{ temp_min }} °C</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Température Moyenne</h6>
+                    <h3 class="fw-bold text-success">{{ temp_moy }} °C</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Mesures</h6>
+                    <h3 class="fw-bold">{{ total_mesures }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <h5 class="fw-semibold mb-3">
+                <i class="fas fa-city me-2"></i> Statistiques par Ville
+            </h5>
+
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Ville</th>
+                        <th>Température Moyenne (°C)</th>
+                        <th>Humidité Moyenne (%)</th>
+                        <th>Nombre de Mesures</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in stats_villes %}
+                    <tr>
+                        <td>{{ s.station__ville__nom }}</td>
+                        <td>{{ s.temp_moy|floatformat:2 }}</td>
+                        <td>{{ s.humidite_moy|floatformat:2 }}</td>
+                        <td>{{ s.total_mesures }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ================= GRAPH TEMP ================= -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="fw-semibold mb-3">
+                <i class="fas fa-thermometer-half me-2"></i>
+                Température moyenne par ville
+            </h5>
+            <canvas id="tempChart"></canvas>
+        </div>
+    </div>
+
+    <!-- ================= GRAPH HUMIDITE ================= -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <h5 class="fw-semibold mb-3">
+                <i class="fas fa-water me-2"></i>
+                Humidité moyenne par ville
+            </h5>
+            <canvas id="humChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = {{ labels|safe }};
+    const tempValues = {{ temp_values|safe }};
+    const humValues = {{ humidite_values|safe }};
+
+    new Chart(document.getElementById("tempChart"), {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Température Moyenne (°C)",
+                data: tempValues
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("humChart"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Humidité Moyenne (%)",
+                data: humValues,
+                tension: 0.4
+            }]
+        }
+    });
+</script>
+{% endblock %}

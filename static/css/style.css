@@ -1,0 +1,84 @@
+/* GLOBAL BACKGROUND */
+body {
+    background: linear-gradient(to bottom, #e0f2fe, #f0f9ff 40%, #f8fafc);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #1e293b;
+}
+
+/* TITRES */
+h1, h2 {
+    color: #1e3a8a;
+    border-bottom: 2px solid #bfdbfe;
+    padding-bottom: 6px;
+    font-weight: 700;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+/* ------------------------ */
+/* CARDS — Glass Weather UI */
+/* ------------------------ */
+.card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 6px 22px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+}
+
+.card p.h4 {
+    font-size: 2.4rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+/* Badges de couleur */
+.text-primary { color: #1d4ed8 !important; }
+.text-warning { color: #f59e0b !important; }
+.text-success { color: #059669 !important; }
+.text-secondary { color: #64748b !important; }
+
+/* ------------------------ */
+/* ALERT CARDS */
+/* ------------------------ */
+.alert-card {
+    background: rgba(255, 235, 235, 0.8);
+    border-left: 5px solid #ef4444;
+    padding: 18px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.alert-card h3 {
+    color: #b91c1c;
+}
+
+/* ------------------------ */
+/* LISTES */
+/* ------------------------ */
+.list-group-item-action {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background-color: white;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.list-group-item-action:hover {
+    background-color: #dbeafe;
+    color: #1e3a8a;
+}

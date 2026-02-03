@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header {% if is_update %}bg-warning text-dark{% else %}bg-danger text-white{% endif %}">
+                <h2 class="h5 mb-0">
+                    <i class="fas fa-bell"></i> 
+                    {% if is_update %}
+                        Modifier l'Alerte
+                    {% else %}
+                        Ajouter une Nouvelle Alerte
+                    {% endif %}
+                </h2>
+            </div>
+            
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            
+                            {{ field }}
+                            
+                            {% if field.help_text %}
+                                <div class="form-text text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                            
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger p-1 mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{% url 'alerts_list' %}" class="btn btn-secondary me-2">
+                            <i class="fas fa-times-circle"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn {% if is_update %}btn-warning text-dark{% else %}btn-danger{% endif %}">
+                            <i class="fas fa-save"></i> 
+                            {% if is_update %}
+                                Sauvegarder les modifications
+                            {% else %}
+                                Déclencher l'Alerte
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

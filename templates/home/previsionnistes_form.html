@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header bg-success text-white">
+                <h2 class="h5 mb-0">
+                    <i class="fas fa-meteor"></i> 
+                    {% if is_update %}
+                        Modifier le Prévisionniste
+                    {% else %}
+                        Ajouter un Prévisionniste
+                    {% endif %}
+                </h2>
+            </div>
+            
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.cin.id_for_label }}" class="form-label fw-bold">{{ form.cin.label }}</label>
+                        {{ form.cin }}
+                        {% if form.cin.errors %}
+                            <div class="alert alert-danger p-1 mt-1">{{ form.cin.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.nom.id_for_label }}" class="form-label fw-bold">{{ form.nom.label }}</label>
+                        {{ form.nom }}
+                        {% if form.nom.errors %}
+                            <div class="alert alert-danger p-1 mt-1">{{ form.nom.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.prenom.id_for_label }}" class="form-label fw-bold">{{ form.prenom.label }}</label>
+                        {{ form.prenom }}
+                        {% if form.prenom.errors %}
+                            <div class="alert alert-danger p-1 mt-1">{{ form.prenom.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="{% url 'previsionnistes_list' %}" class="btn btn-secondary me-2">
+                            <i class="fas fa-times-circle"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> 
+                            {% if is_update %}
+                                Sauvegarder les modifications
+                            {% else %}
+                                Ajouter le Prévisionniste
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

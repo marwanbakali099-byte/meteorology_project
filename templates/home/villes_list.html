@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4 text-success"><i class="fas fa-building"></i> Liste des Villes</h2>
+
+<a href="{% url 'villes_form' %}" class="btn btn-success mb-4 shadow-sm">
+    <i class="fas fa-plus-circle"></i> Ajouter une Ville
+</a>
+
+{% if villes %}
+<div class="table-responsive shadow-sm rounded-3"> 
+    <table class="table table-striped table-hover align-middle bg-white">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col" style="width: 50px;">ID</th>
+                <th scope="col">Nom de la Ville</th>
+                <th scope="col">Surface (km²)</th>
+                <th scope="col">Densité (hab/km²)</th>
+                <th scope="col">Région</th> 
+                <th scope="col">Actions</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for ville in villes %}
+            <tr>
+                <td class="fw-bold">{{ ville.id_ville }}</td>
+                <td class="text-primary fw-bold">{{ ville.nom }}</td>
+                <td>{{ ville.suface|floatformat:2 }}</td>
+                <td>{{ ville.densite_population }}</td>
+                <td><span class="badge bg-secondary">{{ ville.region.nom }}</span></td> 
+                
+                <td>
+                    <a href="{% url 'villes_update' pk=ville.id_ville %}" class="btn btn-sm btn-warning me-2">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    
+                    <a href="{% url 'villes_delete' pk=ville.id_ville %}" 
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ville {{ ville.nom }}?');">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    <i class="fas fa-info-circle"></i> Aucune ville n'a été trouvée dans la base de données.
+</div>
+{% endif %}
+
+{% endblock content %}

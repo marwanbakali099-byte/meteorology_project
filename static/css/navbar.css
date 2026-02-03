@@ -1,0 +1,91 @@
+/* ----------------------------------- */
+/* NAVBAR STYLE — GLASS WEATHER UI    */
+/* ----------------------------------- */
+.navbar {
+    background: rgba(30, 58, 138, 0.70); /* Bleu météo */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 12px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Liens */
+.nav-link {
+    color: #e2e8f0;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Lien actif */
+.nav-link.active {
+    background: rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ALERTES */
+.nav-link-alert {
+    background-color: #ef4444;
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(239,68,68,0.4);
+}
+.nav-link-alert:hover {
+    background-color: #dc2626;
+    transform: scale(1.05);
+}
+
+/* ----------------------------------- */
+/* DROPDOWN */
+/* ----------------------------------- */
+.nav-group {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    min-width: 210px;
+    overflow: hidden;
+    top: 100%;
+    left: 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.nav-link-dropdown {
+    display: block;
+    padding: 12px 18px;
+    color: #e2e8f0;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.nav-link-dropdown:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #93c5fd;
+}
+
+.nav-group:hover .dropdown-content {
+    display: block;
+}

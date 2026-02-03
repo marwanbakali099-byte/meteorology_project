@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4 text-info"><i class="fas fa-cloud-sun"></i> Liste des Mesures Météorologiques</h2>
+
+<a href="{% url 'mesures_form' %}" class="btn btn-info text-white mb-4 shadow-sm">
+    <i class="fas fa-plus-circle"></i> Ajouter une Mesure
+</a>
+
+{% if mesures %}
+<div class="table-responsive shadow-sm rounded-3"> 
+    <table class="table table-striped table-hover align-middle bg-white table-sm"> 
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col" style="min-width: 50px;">ID</th>
+                <th scope="col" style="min-width: 120px;">Date & Heure</th>
+                <th scope="col">Station</th>
+                <th scope="col">Agent</th>
+                <th scope="col" title="Température Moyenne" style="min-width: 80px;">T° Moy.</th>
+                <th scope="col" title="Température Maximale" style="min-width: 80px;">T° Max.</th>
+                <th scope="col">Humidité</th>
+                <th scope="col">Vent (km/h)</th>
+                <th scope="col">Pression (hPa)</th>
+                <th scope="col">Précip. (mm)</th>
+                <th scope="col" style="min-width: 150px;">Actions</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for mesure in mesures %}
+            <tr>
+                <td class="fw-bold">{{ mesure.id_mesure }}</td>
+                <td>{{ mesure.date_heure|date:"Y-m-d H:i" }}</td>
+                <td>{{ mesure.station.nom }}</td>
+                <td>
+                    {% if mesure.agent %}
+                        {{ mesure.agent.prenom }} {{ mesure.agent.nom }}
+                    {% else %}
+                        <span class="badge bg-secondary">N/A</span>
+                    {% endif %}
+                </td>
+                <td>{{ mesure.temperature_moyenne }} °C</td>
+                <td>{{ mesure.temperature_maximale }} °C</td>
+                <td>{{ mesure.taux_d_humidité }} %</td>
+                <td>{{ mesure.vitesse_du_vent }}</td>
+                <td>{{ mesure.pression_atmospherique }}</td>
+                <td>{{ mesure.quantite_de_precipation }}</td>
+                
+                <td>
+                    <a href="{% url 'mesures_update' pk=mesure.id_mesure %}" class="btn btn-sm btn-info text-white me-2">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    
+                    <a href="{% url 'mesures_delete' pk=mesure.id_mesure %}" 
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Êtes-vous sûr de supprimer la mesure n°{{ mesure.id_mesure }}?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-success" role="alert">
+    <i class="fas fa-check-circle"></i> Aucune mesure n'a été trouvée dans la base de données.
+</div>
+{% endif %}
+
+{% endblock content %}

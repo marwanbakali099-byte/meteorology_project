@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4 text-success"><i class="fas fa-users"></i> Liste des Prévisionnistes</h2>
+
+<a href="{% url 'previsionnistes_form' %}" class="btn btn-success mb-4 shadow-sm">
+    <i class="fas fa-plus-circle"></i> Ajouter un Prévisionniste
+</a>
+
+{% if previsionnistes %}
+<div class="table-responsive shadow-sm rounded-3"> 
+    <table class="table table-striped table-hover align-middle bg-white"> 
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col">CIN</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Actions</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for prev in previsionnistes %}
+            <tr>
+                <td class="fw-bold text-success">{{ prev.cin }}</td> 
+                <td>{{ prev.nom }}</td>
+                <td>{{ prev.prenom }}</td>
+                
+                <td>
+                    <a href="{% url 'previsionnistes_update' pk=prev.cin %}" class="btn btn-sm btn-info text-white me-2">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    
+                    <a href="{% url 'previsionnistes_delete' pk=prev.cin %}" 
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Êtes-vous sûr de supprimer le prévisionniste {{ prev.nom }} {{ prev.prenom }}?');">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    <i class="fas fa-info-circle"></i> Aucun prévisionniste n'a été trouvé dans la base de données.
+</div>
+{% endif %}
+
+{% endblock content %}

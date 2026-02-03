@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="mb-5 text-primary fw-bolder border-bottom border-primary pb-2">
+    <i class="fas fa-tachometer-alt"></i> Tableau de Bord Météorologique
+</h1>
+
+<div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #ff4e50, #f9d423);">
+    <div class="card-body p-4">
+        <!-- Entête de l'alerte -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="mb-0 text-white fw-bold">
+                <i class="fas fa-exclamation-triangle fa-2x me-3"></i> État des Alertes Actuelles
+            </h4>
+            <div class="text-end">
+                <span class="d-block small text-white-75">Nombre Total</span>
+                <span class="display-5 fw-bold text-white">{{ total_alertes_actives|default:0 }}</span>
+            </div>
+        </div>
+
+        {% if total_alertes_actives > 0 %}
+            <!-- Détails des dernières alertes -->
+            <p class="fw-bold mb-3 mt-3 text-white border-start border-3 border-light ps-2">
+                <i class="fas fa-stream me-1"></i> Détails des dernières alertes :
+            </p>
+
+<ul class="list-group list-group-flush mb-3">
+    {% for alerte in alertes_recentes %}
+        <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3 mb-2 rounded bg-white bg-opacity-25 border-0">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-bullhorn me-3 text-white"></i>
+                <div class="small text-white">
+                    <strong class="text-white me-2">{{ alerte.type }}</strong>
+                    (Niv.
+                    <span class="badge bg-warning text-dark fw-bold">
+                        {{ alerte.niveau_de_gravite }}
+                    </span>)
+                    <span class="ms-2 text-white opacity-75 d-none d-sm-inline">
+                        Zone : {{ alerte.zone_cocernee }}
+                    </span>
+                </div>
+            </div>
+<span class="small text-white-75 fw-light ms-3">{{ alerte.date_heure|date:"H:i - Y-m-d" }}</span>
+        </li>
+    {% endfor %}
+</ul>
+
+
+            <!-- Bouton vers l'historique complet -->
+            <div class="text-center mt-4">
+                <a href="{% url 'alerts_list' %}" class="btn btn-outline-light fw-bold shadow">
+                    <i class="fas fa-shield-alt me-1"></i> Consulter l'Historique Complet <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+        {% else %}
+            <!-- Message "Aucune alerte" -->
+            <div class="p-3 bg-success bg-opacity-75 rounded mt-3 text-center">
+                <p class="text-white mb-0 fw-bold fs-5">
+                    <i class="fas fa-check-circle me-2"></i> Aucune alerte active. Situation Sous Contrôle.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+<h3 class="mb-4 text-secondary"><i class="fas fa-chart-bar me-2"></i> Indicateurs Clés du Système</h3>
+
+<div class="row g-4 mb-5">
+    
+    <div class="col-md-3">
+        <div class="card text-center shadow-lg border-0 h-100 bg-primary bg-opacity-10">
+            <div class="card-body p-3">
+                <i class="fas fa-home fa-3x text-primary mb-3"></i>
+                <p class="display-6 fw-bold text-primary">{{ total_stations|default:0 }}</p>
+                <p class="text-muted mb-0 fw-bold">Stations Météo</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-lg border-0 h-100 bg-danger bg-opacity-10">
+            <div class="card-body p-3">
+                <i class="fas fa-thermometer-three-quarters fa-3x text-danger mb-3"></i>
+                <p class="display-6 fw-bold text-danger">{{ temp_max_globale|default:"N/A" }} °C</p>
+                <p class="text-muted mb-0 fw-bold">T° Max. Enregistrée</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-lg border-0 h-100 bg-success bg-opacity-10">
+            <div class="card-body p-3">
+                <i class="fas fa-user-tie fa-3x text-success mb-3"></i>
+                <p class="display-6 fw-bold text-success">{{ total_agents|default:0 }}</p>
+                <p class="text-muted mb-0 fw-bold">Agents de Supervision</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center shadow-lg border-0 h-100 bg-info bg-opacity-10">
+            <div class="card-body p-3">
+                <i class="fas fa-city fa-3x text-info mb-3"></i>
+                <p class="display-6 fw-bold text-info">{{ total_villes|default:0 }}</p>
+                <p class="text-muted mb-0 fw-bold">Villes Couvertes</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h3 class="mt-4 mb-4 text-secondary"><i class="fas fa-link me-2"></i> Accès Rapide aux Modules</h3>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mt-3">
+    
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 transition-hover">
+            <div class="card-body d-flex flex-column p-4">
+                <i class="fas fa-cloud-sun fa-2x text-primary mb-3"></i>
+                <h5 class="card-title text-primary fw-bold">Historique des Mesures</h5>
+                <p class="card-text text-muted small flex-grow-1">Consulter et analyser toutes les données enregistrées (température, vent, etc.).</p>
+                <a href="{% url 'mesures_list' %}" class="btn btn-outline-primary btn-sm mt-3 w-100">
+                    <i class="fas fa-eye"></i> Accéder
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 transition-hover">
+            <div class="card-body d-flex flex-column p-4">
+                <i class="fas fa-satellite-dish fa-2x text-warning mb-3"></i>
+                <h5 class="card-title text-warning fw-bold">Gestion des Stations</h5>
+                <p class="card-text text-muted small flex-grow-1">Ajouter, modifier, localiser les stations de collecte de données.</p>
+                <a href="{% url 'stations_list' %}" class="btn btn-outline-warning btn-sm mt-3 w-100">
+                    <i class="fas fa-wrench"></i> Gérer
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 transition-hover">
+            <div class="card-body d-flex flex-column p-4">
+                <i class="fas fa-user-friends fa-2x text-success mb-3"></i>
+                <h5 class="card-title text-success fw-bold">Gestion du Personnel</h5>
+                <p class="card-text text-muted small flex-grow-1">Gérer les agents de collecte et les prévisionnistes .</p>
+                <a href="{% url 'agents_list' %}" class="btn btn-outline-success btn-sm mt-3 w-100">
+                    <i class="fas fa-user-plus"></i> Gérer
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 transition-hover">
+            <div class="card-body d-flex flex-column p-4">
+                <i class="fas fa-sitemap fa-2x text-secondary mb-3"></i>
+                <h5 class="card-title text-secondary fw-bold">Stations & Prévisionnistes</h5>
+                <p class="card-text text-muted small flex-grow-1">Définir les associations de consultation entre les stations et les experts.</p>
+                <a href="{% url 'consulter_list' %}" class="btn btn-outline-secondary btn-sm mt-3 w-100">
+                    <i class="fas fa-cogs"></i> Configurer
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===================== CARTE ===================== -->
+<h3 class="mb-4 mt-4 text-secondary fw-semibold">
+    <i class="fas fa-map-marked-alt me-2"></i> Localisation des Stations Météorologiques
+</h3>
+
+<div class="card shadow-lg border-0 rounded-4 mb-5">
+    <div class="card-body p-0">
+        <div id="map" style="height: 500px; width: 100%;"></div>
+    </div>
+</div>
+
+<!-- ===================== LEAFLET ===================== -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // =====================
+    // LIMITES DU MAROC (CORRIGÉES)
+    // =====================
+    const marocBounds = [
+        [20.5, -17.5], // Sud-Ouest (Dakhla)
+        [36.5, -1.0]   // Nord-Est (Tanger, Oujda)
+    ];
+
+    // =====================
+    // INITIALISATION DE LA CARTE
+    // =====================
+    var map = L.map('map', {
+        maxBounds: marocBounds,
+        maxBoundsViscosity: 1.0, // empêche sortir du Maroc
+        minZoom: 4,              // 👈 plus large pour voir tout le pays
+        maxZoom: 13
+    }).fitBounds(marocBounds);
+
+    // =====================
+    // FOND DE CARTE
+    // =====================
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    // =====================
+    // GROUPE DES STATIONS
+    // =====================
+    var stationsGroup = L.featureGroup().addTo(map);
+
+    // =====================
+    // MARQUEURS
+    // =====================
+    {% for s in stations %}
+        var marker = L.marker([{{ s.latitude }}, {{ s.longtitude }}])
+            .bindPopup(`
+                <strong>{{ s.nom }}</strong><br>
+                Ville : {{ s.ville.nom }}<br>
+                Type : {{ s.get_type_display }}<br>
+                Altitude : {{ s.altitude }} m
+            `);
+
+        stationsGroup.addLayer(marker);
+    {% endfor %}
+
+    // =====================
+    // ZOOM AUTO SUR STATIONS
+    // =====================
+    if (stationsGroup.getLayers().length > 0) {
+        map.fitBounds(stationsGroup.getBounds(), { padding: [40, 40] });
+    }
+</script>
+
+
+
+
+{% endblock content %}

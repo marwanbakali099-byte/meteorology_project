@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4 text-warning"><i class="fas fa-map-marker-alt"></i> {{ page_title }}</h2>
+
+<a href="{% url 'stations_form' %}" class="btn btn-warning text-dark mb-4 shadow-sm">
+    <i class="fas fa-plus-circle"></i> Ajouter une Station
+</a>
+
+{% if stations %}
+<div class="table-responsive shadow-sm rounded-3"> 
+    <table class="table table-striped table-hover align-middle bg-white table-sm"> 
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Lat/Lon</th>
+                <th scope="col">Altitude</th>
+                <th scope="col">Type</th>
+                <th scope="col" style="min-width: 120px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for station in stations %}
+            <tr>
+                <td class="fw-bold text-warning">{{ station.code }}</td>
+                <td>{{ station.nom }}</td>
+                <td>{{ station.ville.nom }}</td>
+                <td>{{ station.latitude }}/{{ station.longtitude }}</td>
+                <td>{{ station.altitude }} m</td>
+                <td><span class="badge bg-secondary">{{ station.type }}</span></td>
+                
+                <td>
+                    <a href="{% url 'stations_update' pk=station.code %}" class="btn btn-sm btn-info text-white me-2">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    
+                    <a href="{% url 'stations_delete' pk=station.code %}" 
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer la station {{ station.nom }}?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    <i class="fas fa-info-circle"></i> Aucune station météorologique n'a été trouvée dans la base de données.
+</div>
+{% endif %}
+
+{% endblock content %}
